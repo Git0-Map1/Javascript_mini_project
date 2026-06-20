@@ -4,14 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <style>
+        body{
+            text-align: center;
+            margin-top: 50px;
+        }
+        button{
+            border: 2px solid black;
+            background-color: red;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #roundScore,#score,#winnerDecision{
+            margin-top: 20px;
+            font-size: 20px;
+
+        }
+    </style>
 </head>
 <body>
+    <div id="box1">
+        <button id="Rock">Rock</button>
+        <button id="Paper">Paper</button>
+        <button id="Scissors">Scissors</button>
+    </div>
+    <div id="roundScore"></div>
+    <div id="score"></div>
+    <div id="winnerDecision"></div>
+        
     <script>
-        //ask for user input
-        function getHumanChoice(){
-            playerChoice = prompt("choose rock, paper, scissors: ")
-            return playerChoice;
-        }
+        const rockBtn = document.getElementById("Rock")
+        const paperBtn = document.getElementById("Paper")
+        const scissorBtn = document.getElementById("Scissors")
+
+        
+        rockBtn.addEventListener("click", ()=>{
+            playRound("rock")
+        })
+        paperBtn.addEventListener("click", ()=>{
+            playRound("paper")
+        })            
+        scissorBtn.addEventListener("click", ()=>{
+            playRound("scissors")
+        })
 
         //random number is generated and getting the computer choice accordingly
         function getComputerChoice(){
@@ -28,63 +65,47 @@
             }
         }
 
-        //function to handle the scores 
-        function playGame(){
             let humanScore = 0;
             let computerScore = 0;
+
+            const roundScore = document.getElementById("roundScore")
+            const score = document.getElementById("score")
+            const winnerDecision = document.getElementById("winnerDecision")
             
-            //function to handle rounds
-            function playRound(humanChoice, computerChoice){
+            
+            function playRound(humanChoice){ 
+                if(humanScore ===5 || computerScore ===5){
+                    return
+                }
                 humanChoice = humanChoice.toLowerCase();
+                computerChoice = getComputerChoice();
                 
                 if(humanChoice === computerChoice){
-                    console.log(`Human choice: ${humanChoice}`)
-                    console.log(`Computer choice: ${computerChoice}`)
-
-                    console.log("Both choose the same. It's a tie.");
+                    roundScore.textContent = `Tie ! Both Choose ${humanChoice.toUpperCase()}`
+                  
                 }
 
                 else if((humanChoice === "rock" && computerChoice === "scissors") || (humanChoice === "scissors" && computerChoice === "paper")
                 ||(humanChoice === "paper" && computerChoice === "rock")){
                     humanScore++
-                    console.log(`Human choice: ${humanChoice}`)
-                    console.log(`Computer choice: ${computerChoice}`)
-
-                    console.log(`${humanChoice} beats ${computerChoice}. So, player wins`)
+                    roundScore.textContent = `Human Choose ${humanChoice.toUpperCase()} which beats Computer Choice ${computerChoice.toUpperCase()}. So, Human wins this round.`
                 }
+
                 else{
                     computerScore++
-                    console.log(`Human choice: ${humanChoice}`)
-                    console.log(`Computer choice: ${computerChoice}`)
-
-                    console.log(`${computerChoice} beats ${humanChoice}. So,computer wins`)
+                    roundScore.textContent = `Computer Choose ${computerChoice.toUpperCase()} which beats Human Choice ${humanChoice.toUpperCase()}. So,computer wins this round.`
+                   
                 }
-                console.log(`Human Score: ${humanScore} || Computer Score: ${computerScore}`)
-            }
+                score.textContent = `Human Score: ${humanScore} || Computer Score: ${computerScore}`
 
-            //loop for 5 times to determine the winner 
-            for(let i=1; i<=5; i++){
-
-                console.log(`Round ${i}`)
-                const humanChoice = getHumanChoice();
-                const computerChoice = getComputerChoice();
-                
-                playRound(humanChoice, computerChoice)
-            }
-
-            //final decision
-            if(humanScore>computerScore){
-                console.log("player win the game")
-            }
-            else if(humanScore===computerScore){
-                console.log("The game is tie")
-            }
-            else {
-                console.log("computer win the game")
-            }
+                if(humanScore === 5){
+                    winnerDecision.textContent = "Human win the game"
+                }
+                if(computerScore === 5){
+                    winnerDecision.textContent = "Computer win the game"
+                }   
         }
-        //calling the function to run the game
-        playGame();
+
     </script>
     
 </body>
