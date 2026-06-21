@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>project: Etch-a-Sketch</title>
+    <style>
+        #container{
+            display: flex;
+            border: 2px solid black;
+            flex-wrap: wrap;
+            width: 960px;
+            height: 960px;
+        }
+
+        .square{
+            /* width: 160px; */
+            /* height: 160px; */
+            border: 1px solid blue;
+            box-sizing: border-box;
+
+        }
+    </style>
+</head>
+<body>
+    <div id="btn">
+        <button id="buttn">New Grid</button>
+    </div>
+    <div id="container"></div>
+
+    <script>
+        const btn = document.getElementById("buttn")
+        const container = document.getElementById("container")
+
+        function createGrid(size){
+            container.innerHTML = ""
+        
+            const squareSize = 960/size
+            for(let i=0; i<size*size; i++){
+                const squareBox = document.createElement("div")            
+                squareBox.classList.add("square");
+                squareBox.style.width = `${squareSize}px`
+                squareBox.style.height = `${squareSize}px`
+                
+                // squareBox.addEventListener("mouseenter",()=>{
+                //     squareBox.style.backgroundColor ="black"
+                // })
+                squareBox.addEventListener("mouseenter", () => {
+                    const r = Math.floor(Math.random() * 256);
+                    const g = Math.floor(Math.random() * 256);
+                    const b = Math.floor(Math.random() * 256);
+                    squareBox.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                });
+
+                container.appendChild(squareBox)
+            }
+        }
+
+
+        btn.addEventListener("click",()=>{
+            let gridSize = prompt("Enter grid size (max 100)")
+            size = Number(gridSize)
+            if(isNaN(size)) return
+
+            if(size>100) size = 100;
+
+            createGrid(size)
+
+        })
+        createGrid(16)
+        
+    </script>
+</body>
+
+</html>
