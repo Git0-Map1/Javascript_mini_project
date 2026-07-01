@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather App</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <h1>🌦️ Weather App</h1>
+
+    <div class="search">
+      <input type="text" id="cityInput" placeholder="Enter city name">
+      <button onclick="getWeather()">Search</button>
+    </div>
+
+    <div id="error"></div>
+
+    <div id="weatherCard" class="card hidden">
+      <h2 id="cityName"></h2>
+      <h1 id="temp"></h1>
+      <p id="condition"></p>
+
+      <div class="details">
+        <p id="feelsLike"></p>
+        <p id="humidity"></p>
+        <p id="wind"></p>
+      </div>
+    </div>
+
+  </div>
+
+  <scrip>
+<script>
+const API_KEY = "e68b3b3741fe3c96f867cb275c100cfd";
+
+
+async function getWeather() {
+  const city = document.getElementById("cityInput").value;
+  const error = document.getElementById("error");
+  const card = document.getElementById("weatherCard");
+
+  error.innerText = "";
+
+  try {
+    // ✅ FIX: use city instead of lat/lon
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+    );
+
+    if (!res.ok) {
+      throw new Error("City not found");
+    }
+
+    const data = await res.json();
+
+    document.getElementById("cityName").innerText =
+      `${data.name}, ${data.sys.country}`;
+
+    document.getElementById("temp").innerText =
+      `${Math.round(data.main.temp)}°C`;
+
+    document.getElementById("condition").innerText =
+      data.weather[0].main;
+
+    document.getElementById("feelsLike").innerText =
+      `Feels like: ${Math.round(data.main.feels_like)}°C`;
+
+    document.getElementById("humidity").innerText =
+      `Humidity: ${data.main.humidity}%`;
+
+    document.getElementById("wind").innerText =
+      `Wind: ${data.wind.speed} m/s`;
+
+    card.classList.remove("hidden");
+
+  } catch (err) {
+    error.innerText = "❌ City not found!";
+    card.classList.add("hidden");
+  }
+}
+
+  </script>
+
+</body>
+</html>
